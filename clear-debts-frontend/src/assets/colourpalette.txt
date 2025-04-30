@@ -1,0 +1,19 @@
+Primary Colors
+Blue (#2563EB – Tailwind blue-600): Trust, reliability
+
+White (#FFFFFF): Clean, open layout
+
+Slate (#64748B – Tailwind slate-500/600): Professional and neutral
+
+✅ Accent Colors
+Green (#10B981 – Tailwind emerald-500): Positive actions (like “debt cleared”)
+
+Red (#EF4444 – Tailwind red-500): For warnings or overdue payments, use sparingly
+
+Amber (#F59E0B – Tailwind amber-500): Reminders or upcoming due dates
+
+✅ Backgrounds & Neutrals
+Gray-100 / Gray-50: For light background sections
+
+Gray-800: For dark mode or footer sections
+
