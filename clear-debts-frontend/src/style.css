@@ -81,6 +81,22 @@ input {
   font-size: 1.2em;
 }
 
+.danger-button {
+  background-color: var(--danger-color);
+  color: var(--secondary-color);
+  padding: 5px;
+  border-radius: 10px;
+  margin: 5px;
+}
+
+.action-button {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin: 5px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

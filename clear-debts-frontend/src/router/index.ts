@@ -3,7 +3,8 @@ import Home from '@/pages/Home.vue';
 
 const routes = [
     { path: '/', name: 'Home', component: Home, meta: { layout: 'DefaultLayout' } },
-    { path: '/add', name: 'AddDebt', component: () => import('@/pages/AddDebt.vue'),  meta: { layout: 'DefaultLayout' } },
+    { path: '/add', name: 'AddDebt', component: () => import('@/pages/debtForm.vue'),  meta: { layout: 'DefaultLayout' } },
+    { path: '/edit/:id', name: 'edit', component: () => import('@/pages/debtForm.vue'),  meta: { layout: 'DefaultLayout' } }
 ]
 
 export default createRouter({

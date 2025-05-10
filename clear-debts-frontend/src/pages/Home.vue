@@ -4,11 +4,16 @@ import DefaultLayout from '@/layout/DefaultLayout.vue';
 import DebtCard from '@/components/DebtCard.vue';
 import { useRouter } from 'vue-router';
 import { useDebtStore } from '@/stores/debtStore';
+import { onMounted, computed } from 'vue';
 
 const router = useRouter();
 const DebtStore = useDebtStore();
 
-const debts = DebtStore.debts;
+const debts = computed(() => DebtStore.debts);
+
+onMounted(() => {
+    DebtStore.loadDebts();
+});
 </script>
 
 <template>
@@ -25,6 +30,8 @@ const debts = DebtStore.debts;
                     v-for="debt in debts"
                     :key="debt.id"
                     :debt="debt"
+                    @delete="() => DebtStore.deleteDebt(debt.id)"
+                    @edit="() => router.push({ name: 'edit', params: { id: debt.id } })"
                 />
             </div>
             <div v-else>

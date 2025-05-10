@@ -1,7 +1,7 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
-export function useValidation(initialValues: any) {
-    const values = ref({...initialValues});
+export function useValidation(formRef: any) {
+    const values = computed(() => formRef.value);
     const validationErrors = ref<any>({});
     const isValid = ref(true);
 
