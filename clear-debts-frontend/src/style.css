@@ -40,13 +40,22 @@ button {
   color: var(--danger-color);
 }
 
-.primary-button {
-  background-color: var(--danger-color);
-  color: var(--secondary-color);
+.button {
   padding: 5px;
   border-radius: 10px;
   margin: 5px;
 }
+
+.primary {
+  background-color: var(--danger-color);
+  color: var(--secondary-color);
+}
+
+.secondary {
+  background-color: var(--secondary-color);
+  color: var(--danger-color);
+}
+
 
 input {
   all: unset;
@@ -95,6 +104,21 @@ input {
   padding: 5px 10px;
   border-radius: 10px;
   margin: 5px;
+}
+
+.dropdown {
+  background-color: var(--secondary-color);
+  color: var(--danger-color);
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 1em;
+  margin: 5px;
+  cursor: pointer;
+  border: 1px solid var(--danger-color);
+}
+
+.dropdown:focus {
+  outline: 2px solid var(--danger-color);
 }
 
 @media (prefers-color-scheme: light) {

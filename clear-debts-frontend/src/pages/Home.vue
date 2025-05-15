@@ -24,7 +24,7 @@ onMounted(() => {
 
         <!-- Main content -->
          <div class="space-y-4">
-            <p>Welcome to your debt dashboard! <button class="primary-button" @click="router.push('/add')">Add Debt</button></p>
+            <p>Welcome to your debt dashboard! <button class="primary button" @click="router.push('/add')">Add Debt</button><button class="secondary button" @click="router.push('/graph')">Show graph</button></p>
             <div v-if="debts.length" class="debt-card-container">
                 <DebtCard
                     v-for="debt in debts"
