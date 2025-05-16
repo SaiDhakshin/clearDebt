@@ -4,15 +4,19 @@ import DefaultLayout from '@/layout/DefaultLayout.vue';
 import DebtCard from '@/components/DebtCard.vue';
 import { useRouter } from 'vue-router';
 import { useDebtStore } from '@/stores/debtStore';
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
+import { usePayoffPlanner } from '@/composables/usePayoffPlanner';
 import SortDropdown from '@/components/SortDropdown.vue';
 
 const router = useRouter();
 const DebtStore = useDebtStore();
+const { getStrategy } = usePayoffPlanner();
 
 const debts = computed(() => DebtStore.debts);
+// Debt sort
 const sortOption = ref('name_asc');
 const sortOptions = [
+    { label: 'Select', value: '' },
     { label: 'Name ↑', value: 'name_asc' },
     { label: 'Name ↓', value: 'name_desc' },
     { label: 'Amount ↑', value: 'totalAmount_asc' },
@@ -40,6 +44,25 @@ const sortedDebts = computed(() => {
         return 0;
     })
 })
+// Startegy sort
+const strategyOption = ref('');
+const strategyOptions = [
+    {label: 'Select', value: ''},
+    {label: 'Snowball (Lowest Balance)', value: 'snowball'},
+    {label: 'Avalanche (High Interest)', value: 'avalanche'},
+]
+
+const plannedDebts = computed(() => {
+    return getStrategy(strategyOption.value);
+})
+
+const displayDebts = computed(() => {
+    if(strategyOption.value) {
+        return plannedDebts.value;
+    }
+
+    return sortedDebts.value;
+})
 
 onMounted(() => {
     DebtStore.loadDebts();
@@ -56,11 +79,13 @@ onMounted(() => {
          <div class="space-y-4">
             <p>Welcome to your debt dashboard! <button class="primary button" @click="router.push('/add')">Add Debt</button>
                 <button class="secondary button" @click="router.push('/graph')">Show graph</button>
-                <SortDropdown v-model="sortOption" label="Sort: " :options="sortOptions"/>
+                <SortDropdown v-model="sortOption" label="Sort: " :options="sortOptions" />
+                <SortDropdown v-model="strategyOption" label="Strategy: " :options="strategyOptions" />
+                {{ strategyOption }}
             </p>
             <div v-if="debts.length" class="debt-card-container">
                 <DebtCard
-                    v-for="debt in sortedDebts"
+                    v-for="debt in displayDebts"
                     :key="debt.id"
                     :debt="debt"
                     @delete="() => DebtStore.deleteDebt(debt.id)"
