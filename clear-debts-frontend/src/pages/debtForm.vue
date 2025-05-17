@@ -33,6 +33,51 @@
                         {{ validationErrors.dueDate }}
                     </p>
                 </div>
+                <div class="input-group">
+                    <label for="totalAmount" class="block font-semi-bold mb-1">Interest Rate (p.a)</label>
+                    <input type="text" v-model="Debt.interestRatemount" required class="border p-2 rounded"
+                    @input="setDebtValue('interestRate', Debt.interestRate)"
+                    @blur="setDebtValue('interestRate', Debt.interestRate)" />
+                    <p v-if="validationErrors.interestRate" class="danger">
+                        {{ validationErrors.interestRate }}
+                    </p>
+                </div>
+                <div class="input-group">
+                    <label for="totalAmount" class="block font-semi-bold mb-1">Monthly Payment</label>
+                    <input type="text" v-model="Debt.monthlyPayment" required class="border p-2 rounded"
+                    @input="setDebtValue('monthlyPayment', Debt.monthlyPayment)"
+                    @blur="setDebtValue('monthlyPayment', Debt.monthlyPayment)" />
+                    <p v-if="validationErrors.monthlyPayment" class="danger">
+                        {{ validationErrors.monthlyPayment }}
+                    </p>
+                </div>
+                <div class="input-group">
+                    <label for="dueDate" class="block font-semi-bold mb-1">Start Date</label>
+                    <Datepicker v-model="Debt.startDate" :enable-time-picker="false" hide-input-icon
+                        @input="setDebtValue('startDate', Debt.startDate)"
+                        @blur="setDebtValue('startDate', Debt.startDate)"/>
+                    <p v-if="validationErrors.startDate" class="danger">
+                        {{ validationErrors.startDate }}
+                    </p>
+                </div>
+                <div class="input-group">
+                    <label for="totalAmount" class="block font-semi-bold mb-1">Payment frequency</label>
+                    <input type="text" v-model="Debt.paymentFrequency" required class="border p-2 rounded"
+                    @input="setDebtValue('paymentFrequency', Debt.paymentFrequency)"
+                    @blur="setDebtValue('paymentFrequency', Debt.paymentFrequency)" />
+                    <p v-if="validationErrors.paymentFrequency" class="danger">
+                        {{ validationErrors.paymentFrequency }}
+                    </p>
+                </div>
+                <div class="input-group">
+                    <label for="totalAmount" class="block font-semi-bold mb-1">Current balance</label>
+                    <input type="text" v-model="Debt.currentBalance" required class="border p-2 rounded"
+                    @input="setDebtValue('currentBalance', Debt.currentBalance)"
+                    @blur="setDebtValue('currentBalance', Debt.currentBalance)" />
+                    <p v-if="validationErrors.currentBalance" class="danger">
+                        {{ validationErrors.currentBalance }}
+                    </p>
+                </div>
                 <button type="submit" class="rounded py-2 px-4 primary-button">
                     {{ isEdit ? 'Update' : 'Add' }} Debt
                 </button>
@@ -60,6 +105,11 @@ const Debt = ref({
     name: '',
     totalAmount: 0,
     dueDate: new Date(),
+    interestRate: 2,
+    monthlyPayment: 0,
+    startDate: new Date(),
+    paymentFrequency: 0,
+    currentBalance: 0,
 });
 
 const DebtStore = useDebtStore();

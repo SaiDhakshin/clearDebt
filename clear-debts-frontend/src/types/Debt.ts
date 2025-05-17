@@ -3,4 +3,9 @@ export interface Debt {
     name: string,
     totalAmount: number,
     dueDate: Date,
+    interestRate: number,
+    monthlyPayment: number,
+    startDate: Date,
+    paymentFrequency: 'monthly' | 'weekly' | 'bi-weekly',
+    currentBalance: number,
 }
