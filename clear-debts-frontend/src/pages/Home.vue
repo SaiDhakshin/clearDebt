@@ -10,9 +10,10 @@ import SortDropdown from '@/components/SortDropdown.vue';
 
 const router = useRouter();
 const DebtStore = useDebtStore();
-const { getStrategy } = usePayoffPlanner();
-
 const debts = computed(() => DebtStore.debts);
+
+const { getStrategy } = usePayoffPlanner(debts);
+
 // Debt sort
 const sortOption = ref('name_asc');
 const sortOptions = [
@@ -81,7 +82,6 @@ onMounted(() => {
                 <button class="secondary button" @click="router.push('/graph')">Show graph</button>
                 <SortDropdown v-model="sortOption" label="Sort: " :options="sortOptions" />
                 <SortDropdown v-model="strategyOption" label="Strategy: " :options="strategyOptions" />
-                {{ strategyOption }}
             </p>
             <div v-if="debts.length" class="debt-card-container">
                 <DebtCard
