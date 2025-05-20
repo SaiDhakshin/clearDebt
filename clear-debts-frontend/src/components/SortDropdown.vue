@@ -1,6 +1,6 @@
 <template>
     <div>
-        <label for="">{{ label }}</label>
+        <label for="" :class="labelClass">{{ label }}</label>
         <select class="dropdown" v-model="sortValue" :disabled="disabled" @change="updateValue">
             <option v-for="option in options" :value="option.value" :key="option.value">
                 {{ option.label }}
@@ -21,6 +21,7 @@ const props = defineProps<{
     options: Option[];
     modelValue: string;
     disabled?: boolean;
+    labelClass?: string;
 }>();
 
 const sortValue = ref(props.modelValue);

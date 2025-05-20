@@ -1,9 +1,38 @@
 import type { Debt, amortizationEntry } from "@/types/Debt";
 
+function getPaymentsPerYear(frequency: Debt["paymentFrequency"]) {
+    switch(frequency) {
+        case 'weekly': return 52;
+        case 'bi-weekly': return 26;
+        case 'monthly': return 12;
+        default: return 12; // Default to monthly if not recognized 
+    }
+}
+
+function advanceDate(date: Date, frequency: Debt["paymentFrequency"]) {
+    const newDate = new Date(date);
+
+    switch(frequency) {
+        case 'weekly':
+            newDate.setDate(newDate.getDate() + 7);
+            break;
+        case 'bi-weekly':
+            newDate.setDate(newDate.getDate() + 14);
+            break;
+        case 'monthly':
+        default:
+            newDate.setMonth(newDate.getMonth() + 1);
+            break;
+    }
+
+    return newDate;
+}
+
 export function useDebtCalculator(debt: Debt) {
     const enrichDebt = {...debt};
 
-    const interestRatePerMonth = (debt.interestRate / 100) / 12;
+    const paymentsPerYear = getPaymentsPerYear(debt.paymentFrequency);
+    const interestRatePerPeriod = (debt.interestRate / 100) / paymentsPerYear;
     let balance = debt.currentBalance || debt.totalAmount;
     const monthlyPayment = debt.monthlyPayment;
 
@@ -13,7 +42,7 @@ export function useDebtCalculator(debt: Debt) {
     let currentDate = new Date(debt.startDate);
 
     while(balance > 0 && months < 1000) {
-        const interest = balance * interestRatePerMonth;
+        const interest = balance * interestRatePerPeriod;
         const principal = Math.min(monthlyPayment - interest, balance);
 
         balance -= principal;
@@ -28,7 +57,7 @@ export function useDebtCalculator(debt: Debt) {
         })
 
         // Move to the next payment date
-        currentDate.setMonth(currentDate.getMonth() + 1);
+        currentDate = advanceDate(currentDate, debt.paymentFrequency);
         months++;
     }
 

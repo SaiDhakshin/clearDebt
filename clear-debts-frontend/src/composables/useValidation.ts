@@ -5,11 +5,13 @@ export function useValidation(formRef: any) {
     const validationErrors = ref<any>({});
     const isValid = ref(true);
 
-    const validate = () => {
+    const validate = (skipKeys: string[] = []) => {
         isValid.value = true;
         validationErrors.value = {};
 
         for(const key in values.value) {
+            if(skipKeys.includes(key)) continue;
+            
             const value = values.value[key];
 
             if(!value) {

@@ -102,14 +102,11 @@
           <label for="totalAmount" class="block font-semi-bold mb-1"
             >Payment frequency</label
           >
-          <input
-            type="text"
-            v-model="Debt.paymentFrequency"
-            required
-            class="border p-2 rounded"
-            @input="setDebtValue('paymentFrequency', Debt.paymentFrequency)"
-            @blur="setDebtValue('paymentFrequency', Debt.paymentFrequency)"
-          />
+          <select class="dropdown" v-model="Debt.paymentFrequency">
+              <option v-for="option in paymentFrequencies" :value="option.value" :key="option.value">
+                  {{ option.label }}
+              </option>
+          </select>
           <p v-if="validationErrors.paymentFrequency" class="danger">
             {{ validationErrors.paymentFrequency }}
           </p>
@@ -148,12 +145,13 @@ import "@vuepic/vue-datepicker/dist/main.css";
 import { useValidation } from "@/composables/useValidation";
 import { onMounted } from "vue";
 import { useDebtCalculator } from "@/composables/useDebtCalculator";
+import SortDropdown from "@/components/SortDropdown.vue";
 
 const router = useRouter();
 const route = useRoute();
 const isEdit = computed(() => !!route?.params?.id);
 
-const Debt = ref({
+const Debt: any = ref({
   id: "0",
   name: "",
   totalAmount: 0,
@@ -161,9 +159,15 @@ const Debt = ref({
   interestRate: 2,
   monthlyPayment: 0,
   startDate: new Date(),
-  paymentFrequency: 0,
+  paymentFrequency: 'monthly',
   currentBalance: 0,
 });
+
+const paymentFrequencies = [
+  { label: "Monthly", value: 'monthly' },
+  { label: "Bi-weekly", value: 'bi-weekly' },
+  { label: "Weekly", value: 'weekly' },
+];
 
 const DebtStore = useDebtStore();
 const debts = computed(() => DebtStore.debts);
@@ -184,9 +188,10 @@ onMounted(() => {
 
 // Initialize the reusable validation hook
 const { values, validationErrors, validate, setValue } = useValidation(Debt);
+const skipKeys: string[] = ["interestAmount", "totalInterestPaid", "monthsToPayoff","amortizationSchedule"]
 
 const submitDebt = () => {
-  if (validate()) {
+  if (validate(skipKeys)) {
     const enrichedDebt = useDebtCalculator(Debt.value);
     if (isEdit.value) {
       DebtStore.updateDebt(enrichedDebt);
