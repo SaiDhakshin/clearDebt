@@ -56,3 +56,19 @@ export function createDebtLineChart(debts: Debt[]) {
     ],
   };
 }
+
+export function createDebtPayoffLineChart(debt: Debt) {
+  const labels = debt?.amortizationSchedule?.map((entry: any) => new Date(entry.paymentDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric'}))
+
+  return {
+    labels,
+    datasets: [{
+      label: 'Remaining Balance',
+      borderColor: '#42A5F5',
+      backgroundColor: 'rgba(66, 165, 245, 0.2)',
+      data: debt?.amortizationSchedule.map((entry: any) => entry.remainingBalance),
+      fill: true,
+      tension: 0.3
+    }]
+  }
+}
