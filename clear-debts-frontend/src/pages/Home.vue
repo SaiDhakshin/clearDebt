@@ -7,10 +7,18 @@ import { useDebtStore } from '@/stores/debtStore';
 import { onMounted, computed, ref, watch } from 'vue';
 import { usePayoffPlanner } from '@/composables/usePayoffPlanner';
 import SortDropdown from '@/components/SortDropdown.vue';
+import SummaryCard from '@/components/SummaryCard.vue';
+import { getDashboardMetrics } from '@/utils/dashboardUtil';
 
 const router = useRouter();
 const DebtStore = useDebtStore();
 const debts = computed(() => DebtStore.debts);
+const debtSummary = computed(() => getDashboardMetrics(debts.value));
+
+const totalDebt = computed(() => debtSummary.value.totalDebt);
+const totalInterest = computed(() => debtSummary.value.totalInterest);
+const monthlyPayment = computed(() => debtSummary.value.avgMonthly);
+const nextDueDate = computed(() => debtSummary.value.nextPaymentDate);
 
 const { getStrategy } = usePayoffPlanner(debts);
 
@@ -83,17 +91,22 @@ onMounted(() => {
                 <SortDropdown v-model="sortOption" label="Sort: " :options="sortOptions" />
                 <SortDropdown v-model="strategyOption" label="Strategy: " :options="strategyOptions" />
             </p>
-            <div v-if="debts.length" class="debt-card-container">
-                <DebtCard
-                    v-for="debt in displayDebts"
-                    :key="debt.id"
-                    :debt="debt"
-                    @delete="() => DebtStore.deleteDebt(debt.id)"
-                    @edit="() => router.push({ name: 'edit', params: { id: debt.id } })"
-                />
-            </div>
-            <div v-else>
-                <p>No Debts to show</p>
+            <div class="debt-container">            
+                <div>                    
+                    <SummaryCard :totalDebt="totalDebt" :monthlyPayment="monthlyPayment" :nextDueDate="nextDueDate" :totalInterest="totalInterest" />
+                </div>
+                <div v-if="debts.length" class="debt-card-container">
+                    <DebtCard
+                        v-for="debt in displayDebts"
+                        :key="debt.id"
+                        :debt="debt"
+                        @delete="() => DebtStore.deleteDebt(debt.id)"
+                        @edit="() => router.push({ name: 'edit', params: { id: debt.id } })"
+                    />
+                </div>
+                <div v-else>
+                    <p>No Debts to show</p>
+                </div>
             </div>
 
          </div>
@@ -106,11 +119,15 @@ onMounted(() => {
 </template>
 
 <style>
+.debt-container {
+    background-color: #213448;
+    padding-top: 15px;
+}
+
 .debt-card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-    background-color: #213448;
+    gap: 16px;    
     padding: 15px;
 }
 </style>

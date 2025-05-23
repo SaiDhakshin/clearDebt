@@ -25,7 +25,6 @@
             >Amount</label
           >
           <input
-            type="text"
             v-model="Debt.totalAmount"
             required
             class="border p-2 rounded"
@@ -56,7 +55,6 @@
             >Interest Rate (p.a)</label
           >
           <input
-            type="text"
             v-model="Debt.interestRate"
             required
             class="border p-2 rounded"
@@ -72,7 +70,6 @@
             >Monthly Payment</label
           >
           <input
-            type="text"
             v-model="Debt.monthlyPayment"
             required
             class="border p-2 rounded"
@@ -116,7 +113,6 @@
             >Current balance</label
           >
           <input
-            type="text"
             v-model="Debt.currentBalance"
             required
             class="border p-2 rounded"
